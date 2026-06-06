@@ -1,0 +1,6 @@
+/venv
+/.vscode
+*.zip
+*.log
+*.pyc
+*.csv

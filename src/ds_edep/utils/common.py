@@ -2,7 +2,7 @@ import json
 import yaml
 import os
 import joblib
-from ds_edep import main_logger
+from src.ds_edep import main_logger
 from ensure import ensure_annotations
 from box import ConfigBox
 from box.exceptions import BoxValueError
@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any, Union
 
 @ensure_annotations
-def load_yaml(path: Path) -> ConfigBox:
+def read_yaml(path: Path) -> ConfigBox:
     try:
         with open(path, "r", encoding="utf-8") as f:  # Контекстний менеджер + кодування
             content = yaml.safe_load(f)
@@ -29,7 +29,7 @@ def save_json(path: Path, data: dict | ConfigBox) -> None:
     main_logger.info(f"JSON file saved succesfully to {path}") 
         
 @ensure_annotations
-def laod_json(path: Path) -> ConfigBox:
+def read_json(path: Path) -> ConfigBox:
     with open(path, "r", encoding="utf-8") as file:
         content = json.load(file)
     
