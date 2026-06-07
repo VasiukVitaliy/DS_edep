@@ -1,6 +1,6 @@
 from src.ds_edep.constants import *
 from src.ds_edep.utils.common import read_yaml, create_directories
-from src.ds_edep.entity.config_entity import DataIngestionConfig, DataValidationConfig
+from src.ds_edep.entity.config_entity import DataIngestionConfig, DataValidationConfig, DataTransformConfig
 
 class ConfigManager:
     def __init__(self,
@@ -40,4 +40,13 @@ class ConfigManager:
         )
         
         return class_conf
+    
+    def get_data_transformation_config(self) -> DataTransformConfig:
+        cfg = self.config.data_transformation
+        create_directories([cfg.root_dir])
+        
+        obj_config = DataTransformConfig(root_dir= cfg.root_dir,
+                                         data_path = cfg.data_path)
+        
+        return obj_config
         
