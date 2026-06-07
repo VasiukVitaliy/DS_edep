@@ -1,20 +1,20 @@
 from src.ds_edep.constants import *
 from src.ds_edep.utils.common import read_yaml, create_directories
-from src.ds_edep.entity.config_entity import DataIngestionConfig
+from src.ds_edep.entity.config_entity import DataIngestionConfig, DataValidationConfig
 
 class ConfigManager:
     def __init__(self,
                  config_path = CONFIG_FILE_PATH,
                  params_path = PARAMS_FILE_PATH,
                  schema_path = SCHEMA_FILE_PATH):
-        self.config_path = read_yaml(config_path)
-        self.params_path = read_yaml(params_path)
-        schema_path = read_yaml(schema_path)
+        self.config = read_yaml(config_path)
+        self.params = read_yaml(params_path)
+        self.schema = read_yaml(schema_path)
         
-        create_directories([self.config_path.artifacts_root])
+        create_directories([self.config.artifacts_root])
         
     def get_data_ingestion_config(self):
-        config = self.config_path.data_ingestion
+        config = self.config.data_ingestion
         create_directories([config.root_dir])
 
         data_ingestion_config=DataIngestionConfig(
@@ -25,4 +25,19 @@ class ConfigManager:
 
         )
         return data_ingestion_config
+    
+    def get_data_validation_config(self) -> DataValidationConfig:
+        config = self.config.data_validation
+        schema = self.schema.COLUMNS
+        
+        create_directories([config.root_dir])
+        
+        class_conf = DataValidationConfig(
+            root_dir = Path(config.root_dir),
+            STATUS_FILE = Path(config.STATUS_FILE),
+            unzip_data = Path(config.unzip_data_dir),
+            schema = schema  
+        )
+        
+        return class_conf
         
