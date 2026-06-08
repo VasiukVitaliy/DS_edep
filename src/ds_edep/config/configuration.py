@@ -1,6 +1,6 @@
 from src.ds_edep.constants import *
 from src.ds_edep.utils.common import read_yaml, create_directories
-from src.ds_edep.entity.config_entity import DataIngestionConfig, DataValidationConfig, DataTransformConfig
+from src.ds_edep.entity.config_entity import DataIngestionConfig, DataValidationConfig, DataTransformConfig, ModelTrainingConfig
 
 class ConfigManager:
     def __init__(self,
@@ -46,7 +46,27 @@ class ConfigManager:
         create_directories([cfg.root_dir])
         
         obj_config = DataTransformConfig(root_dir= cfg.root_dir,
-                                         data_path = cfg.data_path)
+                                         data_path = cfg.data_path,
+                                         status_data= cfg.status_data)
+        
+        return obj_config
+    
+    def get_model_trainer_config(self):
+        config = self.config.model_training
+        params = self.params.model_param
+        schema = self.schema
+        
+        create_directories([config.root_dir])
+        
+        obj_config = ModelTrainingConfig(
+            root_dir = config.root_dir,
+            train_data = config.train_data_path,
+            test_data = config.test_data_path,
+            model_name = config.model_name,
+            target_column = schema.TARGET_COLUMN.name,
+            alpha = params.alpha,
+            l1_ratio = params.l1_ratio
+        )
         
         return obj_config
         

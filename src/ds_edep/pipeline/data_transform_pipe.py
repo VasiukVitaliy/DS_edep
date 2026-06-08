@@ -11,8 +11,18 @@ class DataTransformtionTrainingPipeline:
     def transform_data(self):
         manager = ConfigManager()
         cfg = manager.get_data_transformation_config()
-        transformer = DataTranform(cfg)
-        transformer.splitting_data()
+        try:
+            with open(cfg.status_data, "r") as file:
+                data = file.read()
+                status = data.split(" ")[-1]
+                if status.strip().lower() == "true":
+                    transformer = DataTranform(cfg)
+                    transformer.splitting_data()
+                else:
+                    main_logger.warning("Data didn't pass tests. Kill pipeline")
+                    raise Exception("Killed the process: dont pass validation test")
+        except FileNotFoundError:
+            main_logger.error("Status file not found! Run data validation first or check the status file path in config.")
         
 if __name__ == "__main__":
     try:

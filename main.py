@@ -2,6 +2,7 @@ from src.ds_edep import main_logger
 from src.ds_edep.pipeline.data_ingestion_pipe import DataIngestionTrainingPipeline
 from src.ds_edep.pipeline.data_validation_pipe import DataValidationPipeline
 from src.ds_edep.pipeline.data_transform_pipe import DataTransformtionTrainingPipeline
+from src.ds_edep.pipeline.model_training_pipe import ModelTrainingPipeline
 
 STAGE_NAME = "Data Ingestion stage"
 try:
@@ -28,6 +29,16 @@ try:
     main_logger.info(f">>>>>> stage {STAGE_NAME} started <<<<<<")
     obj = DataTransformtionTrainingPipeline()
     obj.transform_data()
+    main_logger.info(f">>>>>> stage {STAGE_NAME} completed <<<<<<\n\nx==========x")
+except Exception as e:
+    main_logger.exception(e)
+    raise e
+
+STAGE_NAME="Model Training Stage"
+try:
+    main_logger.info(f">>>>>> stage {STAGE_NAME} started <<<<<<")
+    obj =ModelTrainingPipeline()
+    status = obj.train_model()
     main_logger.info(f">>>>>> stage {STAGE_NAME} completed <<<<<<\n\nx==========x")
 except Exception as e:
     main_logger.exception(e)
