@@ -1,6 +1,6 @@
 from src.ds_edep.constants import *
 from src.ds_edep.utils.common import read_yaml, create_directories
-from src.ds_edep.entity.config_entity import DataIngestionConfig, DataValidationConfig, DataTransformConfig, ModelTrainingConfig
+from src.ds_edep.entity.config_entity import DataIngestionConfig, DataValidationConfig, DataTransformConfig, ModelTrainingConfig, ModelEvaluatingConfig
 
 class ConfigManager:
     def __init__(self,
@@ -66,6 +66,25 @@ class ConfigManager:
             target_column = schema.TARGET_COLUMN.name,
             alpha = params.alpha,
             l1_ratio = params.l1_ratio
+        )
+        
+        return obj_config
+    
+    def get_model_evaluating_config(self) -> ModelEvaluatingConfig:
+        config=self.config.model_evaluation
+        params=self.params.model_param
+        schema=self.schema
+        
+        create_directories([config.root_dir])
+        
+        obj_config = ModelEvaluatingConfig(
+            root_dir = config.root_dir,
+            test_data_path = config.test_data_path,
+            model_path = config.model_path,
+            mlflow_uri = config.mlflow_uri,
+            all_params = params,
+            metric_file_name = config.metric_file_name,
+            target_column = schema.TARGET_COLUMN.name
         )
         
         return obj_config

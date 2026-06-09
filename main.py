@@ -3,6 +3,8 @@ from src.ds_edep.pipeline.data_ingestion_pipe import DataIngestionTrainingPipeli
 from src.ds_edep.pipeline.data_validation_pipe import DataValidationPipeline
 from src.ds_edep.pipeline.data_transform_pipe import DataTransformtionTrainingPipeline
 from src.ds_edep.pipeline.model_training_pipe import ModelTrainingPipeline
+from src.ds_edep.pipeline.model_evaluating_pipe import ModelEvaluatingPipeline
+from dotenv import load_dotenv
 
 STAGE_NAME = "Data Ingestion stage"
 try:
@@ -40,6 +42,17 @@ try:
     obj =ModelTrainingPipeline()
     status = obj.train_model()
     main_logger.info(f">>>>>> stage {STAGE_NAME} completed <<<<<<\n\nx==========x")
+except Exception as e:
+    main_logger.exception(e)
+    raise e
+
+STAGE_NAME="Model Evaluate Stage"
+try:
+    load_dotenv()
+    main_logger.info(f">>>>>> stage {STAGE_NAME} started <<<<<<")
+    obj =ModelEvaluatingPipeline()
+    status = obj.start_evaluating()
+    main_logger.info(f">>>>>> stage {STAGE_NAME} completed. <<<<<<\n\nx==========x")
 except Exception as e:
     main_logger.exception(e)
     raise e

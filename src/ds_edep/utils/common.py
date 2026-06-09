@@ -22,7 +22,7 @@ def read_yaml(path: Path) -> ConfigBox:
         raise e
     
 @ensure_annotations
-def save_json(path: Path, data: dict | ConfigBox) -> None:
+def save_json(path: Path, data: dict | ConfigBox):
     temp_data = data.to_dict() if isinstance(data, ConfigBox) else data
     with open(path, "w", encoding="utf-8") as file:
         json.dump(temp_data, file, indent=4, ensure_ascii=False)
